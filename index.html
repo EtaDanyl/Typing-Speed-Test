@@ -11,10 +11,10 @@
 
     <div id="timer">
       <div class="stat-label">TIME</div>
-      <span id="time">00:60</span>
+      <span id="time" role="timer">01:00</span>
     </div>
 
-    <div id="statistics" >
+    <div id="statistics">
       <div class="stat">
         <div class="stat-label">WPM</div>
         <div class="stat-value" id="wpm">0</div>
@@ -25,13 +25,24 @@
       </div>
     </div>
 
-    <input type="text" id="input-field" placeholder="Start typing..." autocomplete="off" autofocus="on" style="margin-top: 30px;"/>
+    <div id="text-to-type" class="typing-text" style="margin-top: 30px;"></div>
+
+    <input 
+      type="text" 
+      id="input-field" 
+      placeholder="Start typing..." 
+      autocomplete="off" 
+      autofocus 
+      style="margin-top: 30px;"
+    />
 
     <div style="margin-top: 30px;">
       <button id="retry-btn" style="margin-right: 50px;">Retry</button>
       <button id="reset-stats-btn">Reset</button>
     </div>   
 
-  <script src="script.js"></script>
+  </div> 
+
+  <script src="main.js"></script>
 </body>
 </html>

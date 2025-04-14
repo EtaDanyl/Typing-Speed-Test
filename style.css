@@ -8,7 +8,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 70vh;
+    height: 100vh;
   }
 
   .typing-container {
@@ -19,17 +19,22 @@ body {
   }
   
   .typing-text {
-    font-size: 1.8rem;
-    line-height: 2.5rem;
-    max-width: 800px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    font-size: 1.4rem;
+    color: #94d2bd99;
+    margin-bottom: 30px;
+    text-align: center;
   }
 
   .correct {
-    color: green
+    color: #589258
   }
 
   .incorrect {
-    color: red
+    color: #cc5959
   }
 
   .word-active {
