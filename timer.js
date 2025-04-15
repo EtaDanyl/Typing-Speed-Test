@@ -1,40 +1,40 @@
-let timer;
-let timeLeft = 60;
-let timerStarted = false;
+let timer
+let timeLeft = 60
+let timerStarted = false
 
 export function startTimer() {
-  if (timerStarted) return;
+  if (timerStarted) return
 
-  if (timer) clearInterval(timer);
+  if (timer) clearInterval(timer)
 
   timer = setInterval(() => {
-    timeLeft--;
-    updateTimerDisplay(timeLeft);
+    timeLeft--
+    updateTimerDisplay(timeLeft)
 
     if (timeLeft <= 0) {
-      clearInterval(timer);
-      disableInputField();
+      clearInterval(timer)
+      disableInputField()
     }
-  }, 1000);
+  }, 1000)
 
   timerStarted = true; 
 }
 
 function updateTimerDisplay(time) {
-  const minutes = Math.floor(time / 60);
-  const seconds = time % 60;
-  document.getElementById('time').textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  const minutes = Math.floor(time / 60)
+  const seconds = time % 60
+  document.getElementById('time').textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
 }
 
 function disableInputField() {
-  document.getElementById('input-field').disabled = true;
+  document.getElementById('input-field').disabled = true
 }
 
 function onUserStartTyping() {
   if (!timerStarted) {
-    startTimer();
+    startTimer()
   }
 }
 
-document.getElementById('input-field').addEventListener('keydown', onUserStartTyping);
+document.getElementById('input-field').addEventListener('keydown', onUserStartTyping)
 
