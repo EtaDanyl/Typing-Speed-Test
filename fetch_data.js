@@ -1,19 +1,19 @@
 
-export async function fetchRandomPoem() {
-    try {
-      const response = await fetch('https://poetrydb.org/random')
-      const data = await response.json()
-      
-      if (data && data.length > 0) {
-        const poemText = data[0].lines.join(' ')
+export async function fetchRandomText() {
+  try {
+    const response = await fetch('https://fakerapi.it/api/v1/texts?_locale=en_EN&_quantity=1&_characters=1000')
+    const data = await response.json()
 
-        const wordLimit = 200
-        const words = poemText.split(' ')
+    if (data && data.data && data.data.length > 0) {
+      const rawText = data.data[0].content
 
-        const limitedText = words.slice(0, wordLimit).join(' ')
-        return limitedText
-      }
-    } catch (error) {
-      console.error("Failed to fetch poem:", error)
+      const wordLimit = 200
+      const words = rawText.split(' ')
+      const limitedText = words.slice(0, wordLimit).join(' ')
+
+      return limitedText
     }
+  } catch (error) {
+    console.error("Failed to fetch text:", error)
   }
+}

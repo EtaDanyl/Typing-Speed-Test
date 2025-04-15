@@ -1,13 +1,15 @@
-import { startTimer } from './timer.js';
-import { fetchRandomPoem } from './fetch_data.js';
+import { startTimer, resetTimer } from './timer.js'
+import { fetchRandomText } from './fetch_data.js'
 
+const retryButton = document.getElementById('retry-btn')
+const resetButton = document.getElementById('reset-btn')
 const textContainer = document.getElementById('text-to-type')
 const inputContainer = document.getElementById('input-field')
 const wpmElement = document.getElementById('wpm')
 const accuracyElement = document.getElementById('accuracy')
+
 let correctChars = 0
 let totalKeyPresses = 0
-let totalTypedChars = 0
 let startTime = null
 
 function displayParagraph(paragraph) {
@@ -17,9 +19,9 @@ function displayParagraph(paragraph) {
   }
 
   const cleanText = paragraph
-  .replace(/[\n\r\t]+/g, ' ')
-  .replace(/\s+/g, ' ')    
-  .trim()
+    .replace(/[\n\r\t]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
 
   textContainer.innerHTML = ''
   cleanText.split('').forEach(character => {
@@ -30,7 +32,7 @@ function displayParagraph(paragraph) {
 }
 
 function updateStats() {
-  if (!startTime) return;
+  if (!startTime) return
 
   const elapsedTimeInMinutes = (Date.now() - startTime) / 1000 / 60
   const wpm = Math.round((correctChars / 5) / elapsedTimeInMinutes)
@@ -64,25 +66,72 @@ function textAnalyzer() {
   updateStats()
 }
 
+resetButton.addEventListener('click', () => {
+  correctChars = 0
+  totalKeyPresses = 0
+  startTime = null
+
+  wpmElement.innerText = 0
+  accuracyElement.innerText = '0%'
+
+  inputContainer.disabled = true
+  inputContainer.value = ''
+  resetTimer()
+})
+
+retryButton.addEventListener('click', async () => {
+  const fetchedText = await fetchRandomText()
+  resetTimer()
+  displayParagraph(fetchedText)
+  inputContainer.value = ''
+  inputContainer.disabled = false
+  inputContainer.focus()
+
+  correctChars = 0
+  totalKeyPresses = 0
+  startTime = null
+  resetTimer()
+})
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    retryButton.click()
+  }
+
+  if (e.key === 'Escape') {
+    resetButton.click()
+  }
+})
+
+document.getElementById('input-field').addEventListener('keydown', () => {
+  if (!startTime) {
+    startTime = Date.now()
+    startTimer()
+  }
+})
+
+inputContainer.addEventListener('input', (e) => {
+  const inputType = e.inputType
+
+  if (inputType !== 'deleteContentBackward') {
+    totalKeyPresses++
+  }
+
+  textAnalyzer()
+})
 
 window.onload = async () => {
-  const fetchedText = await fetchRandomPoem();
+  const fetchedText = await fetchRandomText()
   displayParagraph(fetchedText)
 
-  document.getElementById('input-field').addEventListener('keydown', () => {
+  inputContainer.addEventListener('keydown', () => {
     if (!startTime) {
       startTime = Date.now()
       startTimer()
     }
   })
 
-  inputContainer.addEventListener('input', (e) => {
-    const inputType = e.inputType;
-  
-    if (inputType !== 'deleteContentBackward') {
-      totalKeyPresses++;
-    }
-  
-    textAnalyzer();
-  });
+  inputContainer.addEventListener('input', () => {
+    textAnalyzer()
+  })
 }

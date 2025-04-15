@@ -2,6 +2,13 @@ let timer
 let timeLeft = 60
 let timerStarted = false
 
+export function resetTimer() {
+  clearInterval(timer)
+  timeLeft = 60
+  timerStarted = false
+  updateTimerDisplay(timeLeft)
+}
+
 export function startTimer() {
   if (timerStarted) return
 
@@ -17,7 +24,7 @@ export function startTimer() {
     }
   }, 1000)
 
-  timerStarted = true; 
+  timerStarted = true
 }
 
 function updateTimerDisplay(time) {
@@ -37,4 +44,3 @@ function onUserStartTyping() {
 }
 
 document.getElementById('input-field').addEventListener('keydown', onUserStartTyping)
-
